@@ -41,9 +41,28 @@ jobs:
           command: |
             python3 -m venv .venv/
             source .venv/bin/activate
+            pip3 install -U pip
             pip3 install -r requirements/local.txt --cache-dir .pip-cache/
       - save_cache_pip
       - save_cache_venv
+  prospector:
+    executor: docker-executor
+    steps:
+      - checkout
+      - restore_cache_venv
+      - run:
+          command: |
+            source .venv/bin/activate
+            prospector
+  black:
+    executor: docker-executor
+    steps:
+      - checkout
+      - restore_cache_venv
+      - run:
+          command: |
+            source .venv/bin/activate
+            black website --check
   test:
     executor: docker-executor
     steps:
@@ -63,5 +82,11 @@ workflows:
     jobs:
       - build
       - test:
+          requires:
+            - build
+      - prospector:
+          requires:
+            - build
+      - black:
           requires:
             - build

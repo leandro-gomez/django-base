@@ -4,3 +4,6 @@ addopts = "-vv --ds=website.settings.test --junitxml test-results/results.xml"
 testpaths = [
     "website",
 ]
+
+[tool.black]
+line-length = 120
