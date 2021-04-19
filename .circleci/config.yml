@@ -79,10 +79,10 @@ jobs:
           destination: tr1
       - store_artifacts:
           path: coverage.xml
-          destination: tr1
+          destination: tr2
       - store_artifacts:
           path: htmlcov
-          destination: tr1
+          destination: tr3
 workflows:
   main:
     jobs:
