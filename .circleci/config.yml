@@ -31,7 +31,7 @@ executors:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 
 jobs:
-  build-and-test:
+  build:
     executor: docker-executor
     steps:
       - checkout
@@ -44,6 +44,10 @@ jobs:
             pip3 install -r requirements/local.txt --cache-dir .pip-cache/
       - save_cache_pip
       - save_cache_venv
+  test:
+    executor: docker-executor
+    steps:
+      - restore_cache_venv
       - run:
           command: |
             source .venv/bin/activate
@@ -53,8 +57,10 @@ jobs:
       - store_artifacts:
           path: test-results
           destination: tr1
-
 workflows:
   main:
     jobs:
-      - build-and-test
+      - build
+      - test:
+          requires:
+            - build
