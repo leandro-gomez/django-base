@@ -71,12 +71,18 @@ jobs:
       - run:
           command: |
             source .venv/bin/activate
-            pytest
+            pytest --cov
       - store_test_results:
           path: test-results
       - store_artifacts:
           path: test-results
           destination: tr1
+      - store_artifacts:
+          path: coverage.xml
+          destination: tr2
+      - store_artifacts:
+          path: htmlcov
+          destination: tr3
 workflows:
   main:
     jobs:

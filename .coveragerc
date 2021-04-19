@@ -1,0 +1,15 @@
+[run]
+omit =
+    */tests/*
+    */migrations/*
+    */settings/*
+    website/gunicorn.py
+    website/wsgi.py
+
+source =
+  website/
+
+[report]
+
+show_missing = yes
+fail_under = 100

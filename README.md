@@ -1,5 +1,8 @@
 # django-base
 
+[![django-base](https://circleci.com/gh/leandro-gomez/django-base.svg?style=svg)](https://app.circleci.com/pipelines/github/leandro-gomez)
+
+
 ## Requirements
 
 - [Docker](https://www.docker.com/)
