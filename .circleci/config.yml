@@ -39,7 +39,7 @@ jobs:
       - restore_cache_venv
       - run:
           command: |
-            pip3 venv .venv/
+            pip3 -m venv .venv/
             source .venv/bin/activate
             pip3 install -r requirements/local.txt --cache-dir .pip-cache/
       - save_cache_pip
