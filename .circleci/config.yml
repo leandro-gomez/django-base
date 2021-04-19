@@ -15,9 +15,15 @@ jobs:
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
     steps:
       - checkout
+      - restore_cache:
+          key: pip3-{{ .Branch }}
       - run:
           command: |
-            pip3 install -r requirements/local.txt
+            pip3 install -r requirements/local.txt --cache-dir .pip-cache/
+      - save_cache:
+          key: pip3-{{ .Branch }}
+          paths:
+            - ".pip-cache/"
       - run:
           command: |
             python3 manage.py test
