@@ -8,11 +8,9 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
       - python/install-packages:
           pip-dependency-file: requirements/local.txt
           pkg-manager: pip
-      - python/save-cache
       - run:
           command: ./manage.py test
           name: Test
