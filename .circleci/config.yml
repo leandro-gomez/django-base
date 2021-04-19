@@ -74,6 +74,6 @@ workflows:
       - test:
           requires:
             - build
-      - prospector
+      - prospector:
           requires:
             - build
