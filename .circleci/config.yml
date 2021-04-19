@@ -4,7 +4,7 @@ orbs:
   python: circleci/python@1.3.5
 
 jobs:
-  build:
+  build-and-test:
     docker:
       - image: python:3.9.4-buster # every job must define an image for the docker executor and subsequent jobs may define a different image.
         auth:
