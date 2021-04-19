@@ -1,6 +1,6 @@
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-vv --ds=website.settings.test --junitxml test-results/results.xml"
+addopts = "-vv --ds=website.settings.test --junitxml test-results/results.xml --cov-report xml:coverage.xml --cov-report html"
 testpaths = [
     "website",
 ]

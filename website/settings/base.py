@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 ]
 
 LOCAL_APPS = [
-    "website.common",
+    "website.common.apps.CommonConfig",
 ]
 
 INSTALLED_APPS += LOCAL_APPS
