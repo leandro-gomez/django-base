@@ -47,6 +47,7 @@ jobs:
   test:
     executor: docker-executor
     steps:
+      - checkout
       - restore_cache_venv
       - run:
           command: |
