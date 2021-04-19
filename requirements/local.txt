@@ -1,1 +1,4 @@
 -r base.txt
+pytest==6.2.3
+pytest-django==4.2.0
+Faker==8.1.0
