@@ -16,6 +16,7 @@
 - `pyenv install 3.9.4`
 - `pyenv virtualenv 3.9.4 django-base`
 - `pip install -r requirements/local.txt`
+- `cp website/settings/.env.local website/settings/.env`
 
 ## Development
 
@@ -25,3 +26,18 @@
 - Linting
     - prospector: `prospector`
     - black: `black website --check`
+
+## Production
+
+**NOTE: DO NOT USE website/settings/.env.local FILE!**
+
+Set environment variables on `website/settings/.env`:
+
+```
+SECRET_KEY="your_secret_key"
+DATABASE_URL="connection_string"
+DEBUG=0
+```
+
+Run gunicorn `gunicorn -c website/gunicorn.py website.wsgi:application`
+**TIP:** Use `-w` for tuning the amount of gunicorn workers 

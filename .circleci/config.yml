@@ -21,7 +21,21 @@ commands:
     steps:
       - restore_cache:
           key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
-
+  set_test_env:
+    steps:
+      - run:
+          command: |
+            cp website/settings/.env.local website/settings/.env
+  save_test_env:
+    steps:
+      - save_cache:
+          key: env-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          paths:
+            - "website/settings/.env"
+  restore_test_env:
+    steps:
+      - restore_cache:
+          key: env-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
 executors:
   docker-executor:
     docker:
@@ -37,6 +51,7 @@ jobs:
       - checkout
       - restore_cache_pip
       - restore_cache_venv
+      - set_test_env
       - run:
           command: |
             python3 -m venv .venv/
@@ -45,6 +60,7 @@ jobs:
             pip3 install -r requirements/local.txt --cache-dir .pip-cache/
       - save_cache_pip
       - save_cache_venv
+      - save_test_env
   prospector:
     executor: docker-executor
     steps:
@@ -68,6 +84,7 @@ jobs:
     steps:
       - checkout
       - restore_cache_venv
+      - restore_test_env
       - run:
           command: |
             source .venv/bin/activate
