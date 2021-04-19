@@ -53,6 +53,15 @@ jobs:
           command: |
             source .venv/bin/activate
             prospector
+  black:
+    executor: docker-executor
+    steps:
+      - checkout
+      - restore_cache_venv
+      - run:
+          command: |
+            source .venv/bin/activate
+            black website --check
   test:
     executor: docker-executor
     steps:
@@ -75,5 +84,8 @@ workflows:
           requires:
             - build
       - prospector:
+          requires:
+            - build
+      - black:
           requires:
             - build
