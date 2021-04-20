@@ -101,7 +101,8 @@ jobs:
       - run:
           command: |
             source .venv/bin/activate
-            ./manage.py migrate
+            ./manage.py diffsettings
+            ./manage.py migrate -v
   prospector:
     executor: docker-executor
     steps:
