@@ -48,7 +48,7 @@ jobs:
   build_docker_image:
     executor: docker
     steps:
-      - setup_remote_docke
+      - setup_remote_docker
       - run:
           command: |
             docker build .
