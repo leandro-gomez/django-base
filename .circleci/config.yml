@@ -102,7 +102,7 @@ jobs:
           command: |
             source .venv/bin/activate
             ./manage.py diffsettings
-            ./manage.py migrate -v
+            ./manage.py migrate -v3
   prospector:
     executor: docker-executor
     steps:
