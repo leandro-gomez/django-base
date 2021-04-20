@@ -58,13 +58,18 @@ commands:
             sleep 10;
             docker-compose logs;
 executors:
-  docker-executor:
+  python-executor:
     docker:
       - image: python:3.9.4-buster # every job must define an image for the docker executor and subsequent jobs may define a different image.
         auth:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD
-
+  docker-executor:
+    docker:
+      - image: docker:20.10.6
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
 jobs:
   build_docker_image:
     executor: docker-executor
@@ -73,8 +78,16 @@ jobs:
       - run:
           command: |
             docker-compose run python3 manage.py check
-  build:
+  test-migrations:
     executor: docker-executor
+    steps:
+      - docker_env
+      - run:
+          command: |
+            docker-compose run python3 manage.py diffsettings
+            docker-compose run python3 manage.py migrate -v3
+  build:
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_pip
@@ -89,16 +102,8 @@ jobs:
       - save_cache_pip
       - save_cache_venv
       - save_test_env
-  test-migrations:
-    executor: docker-executor
-    steps:
-      - docker_env
-      - run:
-          command: |
-            docker-compose run python3 manage.py diffsettings
-            docker-compose run python3 manage.py migrate -v3
   prospector:
-    executor: docker-executor
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_venv
@@ -107,7 +112,7 @@ jobs:
             source .venv/bin/activate
             prospector
   black:
-    executor: docker-executor
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_venv
@@ -116,7 +121,7 @@ jobs:
             source .venv/bin/activate
             black website --check
   test:
-    executor: docker-executor
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_venv
