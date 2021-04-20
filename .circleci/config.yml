@@ -50,7 +50,7 @@ jobs:
     steps:
       - setup_remote_docke
       - run:
-          commands: |
+          command: |
             docker build .
   build:
     executor: docker-executor
