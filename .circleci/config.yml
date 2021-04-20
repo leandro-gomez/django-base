@@ -154,3 +154,6 @@ workflows:
       - black:
           requires:
             - build
+      - test-migrations:
+          requires:
+            - build
