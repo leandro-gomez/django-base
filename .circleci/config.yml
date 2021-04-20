@@ -50,6 +50,7 @@ commands:
       - set_test_env_with_psql
       - run:
           command: |
+            docker-compose pull
             docker-compose build
             docker-compose up -d db;
             sleep 10;
@@ -74,15 +75,15 @@ jobs:
       - docker_env
       - run:
           command: |
-            docker-compose run python3 manage.py check
+            docker-compose run web python3 manage.py check
   test-migrations:
     executor: docker-executor
     steps:
       - docker_env
       - run:
           command: |
-            docker-compose run python3 manage.py diffsettings
-            docker-compose run python3 manage.py migrate -v3
+            docker-compose run web python3 manage.py diffsettings
+            docker-compose run web python3 manage.py migrate -v3
   build:
     executor: python-executor
     steps:
