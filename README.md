@@ -20,7 +20,8 @@
 
 ## Development
 
-- Init database: `./manage.py migrate`
+- Start database: `docker-compose up -d db`
+- Run migrations: `./manage.py migrate`
 - Run local server: `./manage.py runserver 0.0.0.0:8000`
 - Run tests: `pytest --cov`
 - Linting
