@@ -110,6 +110,7 @@ jobs:
 workflows:
   main:
     jobs:
+      - build_docker_image
       - build
       - test:
           requires:
