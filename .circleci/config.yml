@@ -143,6 +143,9 @@ workflows:
   main:
     jobs:
       - build_docker_image
+      - test-migrations:
+          requires:
+            - build_docker_image
       - build
       - test:
           requires:
