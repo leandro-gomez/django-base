@@ -55,7 +55,7 @@ executors:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     # Service container image available at `host: localhost`
-      - image: circleci/postgres:13.2-alpine
+      - image: postgres:13.2-alpine
         auth:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD
