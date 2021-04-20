@@ -26,23 +26,42 @@ commands:
       - run:
           command: |
             cp website/settings/.env.local website/settings/.env
+  set_test_env_with_psql:
+    steps:
+      - run:
+          command: |
+            sed -i s/DATABASE_URL.*/DATABASE_URL=postgres://root@localhost:5432/circle-ci-test/g website/settings/.env
   save_test_env:
     steps:
       - save_cache:
-          key: env-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: env-{{ .Branch }}-{{ checksum "website/settings/.env.local" }}
           paths:
             - "website/settings/.env"
   restore_test_env:
     steps:
       - restore_cache:
-          key: env-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: env-{{ .Branch }}-{{ checksum "website/settings/.env.local" }}
 executors:
   docker-executor:
     docker:
       - image: python:3.9.4-buster # every job must define an image for the docker executor and subsequent jobs may define a different image.
         auth:
           username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
+  docker-executor-with-psql:
+    docker:
+      - image: python:3.9.4-buster # every job must define an image for the docker executor and subsequent jobs may define a different image.
+        auth:
+          username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    # Service container image available at `host: localhost`
+      - image: circleci/postgres:13.2-alpine
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle-ci-test
 
 jobs:
   build_docker_image:
@@ -71,6 +90,17 @@ jobs:
       - save_cache_pip
       - save_cache_venv
       - save_test_env
+  test-migrations:
+    executor: docker-executor-with-psql
+    steps:
+      - checkout
+      - restore_cache_venv
+      - restore_cache_env
+      - set_test_env_with_psql
+      - run:
+          command: |
+            source .venv/bin/activate
+            ./manage.py migrate
   prospector:
     executor: docker-executor
     steps:
