@@ -30,7 +30,7 @@ commands:
     steps:
       - run:
           command: |
-            sed -i s/DATABASE_URL.*/DATABASE_URL=postgres://root@localhost:5432/circle-ci-test/g website/settings/.env
+            sed -i s/DATABASE_URL.*/DATABASE_URL=postgres:\/\/postgres:postgres@localhost:5432\/postgres\/g website/settings/.env
   save_test_env:
     steps:
       - save_cache:
@@ -60,8 +60,9 @@ executors:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD
         environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle-ci-test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
 
 jobs:
   build_docker_image:
@@ -73,7 +74,7 @@ jobs:
       - checkout
       - run:
           command: |
-            docker build .
+            docker-compose build
   build:
     executor: docker-executor
     steps:
