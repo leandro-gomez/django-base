@@ -1,6 +1,7 @@
 ignore-paths:
   - manage.py
   - website/settings/
+  - website/gunicorn.py
 test-warnings: true
 strictness: high
 doc-warnings: false

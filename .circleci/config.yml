@@ -4,39 +4,93 @@ commands:
   save_cache_pip:
     steps:
       - save_cache:
-          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
           paths:
             - ".pip-cache/"
   restore_cache_pip:
     steps:
       - restore_cache:
-          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
   save_cache_venv:
     steps:
       - save_cache:
-          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
           paths:
             - ".venv/"
   restore_cache_venv:
     steps:
       - restore_cache:
-          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
-
+          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
+  set_test_env:
+    steps:
+      - run:
+          command: |
+            cp website/settings/.env.local website/settings/.env
+  set_test_env_with_psql:
+    steps:
+      - run:
+          command: |
+            sed -i "s/DATABASE_URL.*/DATABASE_URL=postgres:\/\/postgres:postgres@db:5432\/postgres/g" website/settings/.env
+  save_test_env:
+    steps:
+      - save_cache:
+          key: env-{{ .Branch }}-{{ checksum "website/settings/.env.local" }}
+          paths:
+            - "website/settings/.env"
+  restore_test_env:
+    steps:
+      - restore_cache:
+          key: env-{{ .Branch }}-{{ checksum "website/settings/.env.local" }}
+  docker_env:
+    steps:
+      - setup_remote_docker:
+          version: 20.10.2
+      - checkout
+      - set_test_env
+      - set_test_env_with_psql
+      - run:
+          command: |
+            docker-compose pull
+            docker-compose build
+            docker-compose up -d db;
+            sleep 10;
+            docker-compose logs;
 executors:
-  docker-executor:
+  python-executor:
     docker:
       - image: python:3.9.4-buster # every job must define an image for the docker executor and subsequent jobs may define a different image.
         auth:
           username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-
+          password: $DOCKERHUB_PASSWORD
+  docker-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
 jobs:
-  build:
+  build_docker_image:
     executor: docker-executor
+    steps:
+      - docker_env
+      - run:
+          command: |
+            docker-compose run web python3 manage.py check
+  test-migrations:
+    executor: docker-executor
+    steps:
+      - docker_env
+      - run:
+          command: |
+            docker-compose run web python3 manage.py diffsettings
+            docker-compose run web python3 manage.py migrate -v3
+  build:
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_pip
       - restore_cache_venv
+      - set_test_env
       - run:
           command: |
             python3 -m venv .venv/
@@ -45,8 +99,9 @@ jobs:
             pip3 install -r requirements/local.txt --cache-dir .pip-cache/
       - save_cache_pip
       - save_cache_venv
+      - save_test_env
   prospector:
-    executor: docker-executor
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_venv
@@ -55,7 +110,7 @@ jobs:
             source .venv/bin/activate
             prospector
   black:
-    executor: docker-executor
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_venv
@@ -64,10 +119,11 @@ jobs:
             source .venv/bin/activate
             black website --check
   test:
-    executor: docker-executor
+    executor: python-executor
     steps:
       - checkout
       - restore_cache_venv
+      - restore_test_env
       - run:
           command: |
             source .venv/bin/activate
@@ -86,6 +142,10 @@ jobs:
 workflows:
   main:
     jobs:
+      - build_docker_image
+      - test-migrations:
+          requires:
+            - build_docker_image
       - build
       - test:
           requires:
