@@ -51,6 +51,9 @@ commands:
       - run:
           command: |
             docker-compose build
+            docker-compose up -d db;
+            sleep 10;
+            docker-compose logs;
 executors:
   docker-executor:
     docker:
@@ -66,10 +69,7 @@ jobs:
       - docker_env
       - run:
           command: |
-            docker-compose up -d db;
-            sleep 10;
-            docker-compose logs;
-            docker-compose run python3 manage.py migrate
+            docker-compose run python3 manage.py check
   build:
     executor: docker-executor
     steps:
@@ -87,17 +87,13 @@ jobs:
       - save_cache_venv
       - save_test_env
   test-migrations:
-    executor: docker-executor-with-psql
+    executor: docker-executor
     steps:
-      - checkout
-      - restore_cache_venv
-      - restore_test_env
-      - set_test_env_with_psql
+      - docker_env
       - run:
           command: |
-            source .venv/bin/activate
-            ./manage.py diffsettings
-            ./manage.py migrate -v3
+            docker-compose run python3 manage.py diffsettings
+            docker-compose run python3 manage.py migrate -v3
   prospector:
     executor: docker-executor
     steps:
@@ -149,8 +145,5 @@ workflows:
           requires:
             - build
       - black:
-          requires:
-            - build
-      - test-migrations:
           requires:
             - build
