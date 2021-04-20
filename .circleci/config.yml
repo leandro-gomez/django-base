@@ -45,6 +45,13 @@ executors:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 
 jobs:
+  build_docker_image:
+    executor: docker
+    steps:
+      - setup_remote_docke
+      - run:
+          commands: |
+            docker build .
   build:
     executor: docker-executor
     steps:
