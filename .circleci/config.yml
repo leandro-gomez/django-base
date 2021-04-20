@@ -30,7 +30,7 @@ commands:
     steps:
       - run:
           command: |
-            sed -i s/DATABASE_URL.*/DATABASE_URL=postgres:\/\/postgres:postgres@localhost:5432\/postgres\/g website/settings/.env
+            sed -i "s/DATABASE_URL.*/DATABASE_URL=postgres:\/\/postgres:postgres@localhost:5432\/postgres/g" website/settings/.env
   save_test_env:
     steps:
       - save_cache:
@@ -74,7 +74,7 @@ jobs:
       - checkout
       - run:
           command: |
-            docker-compose build
+            docker build .
   build:
     executor: docker-executor
     steps:
