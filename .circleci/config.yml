@@ -74,7 +74,7 @@ jobs:
       - checkout
       - run:
           command: |
-            docker build .
+            docker-compose build
   build:
     executor: docker-executor
     steps:
