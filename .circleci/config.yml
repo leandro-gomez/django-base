@@ -4,23 +4,23 @@ commands:
   save_cache_pip:
     steps:
       - save_cache:
-          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
           paths:
             - ".pip-cache/"
   restore_cache_pip:
     steps:
       - restore_cache:
-          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: pip3-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
   save_cache_venv:
     steps:
       - save_cache:
-          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
           paths:
             - ".venv/"
   restore_cache_venv:
     steps:
       - restore_cache:
-          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}
+          key: venv-{{ .Branch }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/local.txt" }}-{{ checksum "requirements/production.txt" }}
   set_test_env:
     steps:
       - run:
