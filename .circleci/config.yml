@@ -95,7 +95,7 @@ jobs:
     steps:
       - checkout
       - restore_cache_venv
-      - restore_cache_env
+      - restore_test_env
       - set_test_env_with_psql
       - run:
           command: |
