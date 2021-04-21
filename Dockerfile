@@ -9,4 +9,4 @@ COPY manage.py .
 
 RUN pip3 install -U pip && pip3 install -r $requirements
 
-CMD ['gunicorn', '-c', 'website/gunicorn.py']
+CMD ["gunicorn", "-c", "website/gunicorn.py", "website.wsgi:application"]

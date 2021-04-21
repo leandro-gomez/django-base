@@ -38,7 +38,7 @@
   - `unzip drivers/chromedriver.zip -d drivers/`
   - `chmod +x drivers/chromedriver`
 - Download a [geckodriver](https://github.com/mozilla/geckodriver/releases)
-  - `wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz -O drivers/geckodriver.tar.gz`
+  - `wget https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz -O drivers/geckodriver.tar.gz`
   - `tar zxvf drivers/geckodriver.tar.gz -C drivers/`
   - `chmod +x drivers/geckodriver`
 - Run `pytest --driver Firefox --driver-path drivers/geckodriver --base-url localhost:8000 integration_tests/`
