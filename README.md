@@ -28,6 +28,22 @@
     - prospector: `prospector`
     - black: `black website --check`
 
+## Integration tests
+
+- Google Chrome
+- Firefox
+- Download a [chromedriver](https://chromedriver.chromium.org/downloads)
+  - `wget "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$(google-chrome --version | awk '{print $3}' | awk -F \. '{print $1}')" -O drivers/google_driver_version.txt`
+  - `wget -N "https://chromedriver.storage.googleapis.com/$(cat drivers/google_driver_version.txt)/chromedriver_linux64.zip" -O drivers/chromedriver.zip`
+  - `unzip drivers/chromedriver.zip -d drivers/`
+  - `chmod +x drivers/chromedriver`
+- Download a [geckodriver](https://github.com/mozilla/geckodriver/releases)
+  - `wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz -O drivers/geckodriver.tar.gz`
+  - `tar zxvf drivers/geckodriver.tar.gz -C drivers/`
+  - `chmod +x drivers/geckodriver`
+- Run `pytest --driver Firefox --driver-path drivers/geckodriver --base-url localhost:8000 integration_tests/`
+- Run `pytest --driver Chrome --driver-path drivers/chromedriver --base-url localhost:8000 integration_tests/`
+
 ## Production
 
 **NOTE: DO NOT USE website/settings/.env.local FILE!**
