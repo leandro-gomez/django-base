@@ -105,10 +105,11 @@ jobs:
     steps:
       - checkout
       - restore_cache_venv
+      - restore_test_env
       - run:
           command: |
             source .venv/bin/activate
-            prospector --include-tool-stdout --die-on-tool-error
+            prospector
   black:
     executor: python-executor
     steps:
