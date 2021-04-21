@@ -108,7 +108,7 @@ jobs:
       - run:
           command: |
             source .venv/bin/activate
-            prospector --include-tool-stdout
+            prospector --include-tool-stdout --die-on-tool-error
   black:
     executor: python-executor
     steps:
