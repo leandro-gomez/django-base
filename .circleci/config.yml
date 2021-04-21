@@ -108,7 +108,7 @@ jobs:
       - run:
           command: |
             source .venv/bin/activate
-            prospector
+            prospector --include-tool-stdout
   black:
     executor: python-executor
     steps:
