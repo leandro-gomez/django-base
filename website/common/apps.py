@@ -8,4 +8,5 @@ class CommonConfig(AppConfig):
     """
     Common app configuration
     """
+
     name = "website.common"
