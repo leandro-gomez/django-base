@@ -8,7 +8,7 @@ MIDDLEWARE = MIDDLEWARE + PROD_MIDDLEWARE
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ALLOWED_HOSTS_RAW = env("ALLOWED_HOSTS")
-ALLOWED_HOSTS = ALLOWED_HOSTS.split(",")
+ALLOWED_HOSTS = ALLOWED_HOSTS_RAW.split(",")
 
 CACHES = {
     "default": {
