@@ -6,3 +6,5 @@ PROD_MIDDLEWARE = [
 MIDDLEWARE = MIDDLEWARE + PROD_MIDDLEWARE
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+ALLOWED_HOSTS = ["django-base-7337.herokuapp.com", ]
