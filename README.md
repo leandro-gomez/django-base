@@ -58,3 +58,8 @@ DEBUG=0
 
 Run gunicorn `gunicorn -c website/gunicorn.py website.wsgi:application`
 **TIP:** Use `-w` for tuning the amount of gunicorn workers 
+
+
+### Heroku
+
+- https://devcenter.heroku.com/articles/django-assets
