@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+EXTERNAL_APPS = [
+    'admin_honeypot',
+]
+
 LOCAL_APPS = [
     "website.common.apps.CommonConfig",
 ]
@@ -132,3 +136,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
 SITE_TITLE = "django-base"
+
+DJANGO_ADMIN_PATH = env("DJANGO_ADMIN_PATH")
