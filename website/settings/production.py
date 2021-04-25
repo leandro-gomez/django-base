@@ -17,3 +17,10 @@ CACHES = {
         "LOCATION": os.path.join(BASE_DIR, "django_default_cache"),
     }
 }
+
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
+
+ADMINS = [(full_name, email) for full_name, email in env("ADMINS").split(",")]
+MANAGERS = [(full_name, email) for full_name, email in env("MANAGERS").split(",")]
