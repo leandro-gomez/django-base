@@ -17,12 +17,15 @@ CACHES = {
     }
 }
 
+#  FULL NAME,email@example.com;FULL NAME2,email2@example.com
 ADMINS_RAW = env("ADMINS", default=None)
 if ADMINS_RAW:
-    ADMINS = [(full_name, email) for full_name, email in ADMINS_RAW.split(",")]
+    ADMINS = [full_name__email.split(",") for full_name__email in ADMINS_RAW.split(";")]
+
+#  FULL NAME,email@example.com;FULL NAME2,email2@example.com
 MANAGERS_RAW = env("MANAGERS", default=None)
 if MANAGERS_RAW:
-    MANAGERS = [(full_name, email) for full_name, email in MANAGERS_RAW.split(",")]
+    MANAGERS = [full_name__email.split(",") for full_name__email in MANAGERS_RAW.split(";")]
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
