@@ -168,4 +168,4 @@ workflows:
             - black
           filters:
             branches:
-              only: production
+              only: main
