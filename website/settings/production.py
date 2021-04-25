@@ -22,5 +22,5 @@ CSRF_COOKIE_SECURE = True
 
 SESSION_COOKIE_SECURE = True
 
-ADMINS = [(full_name, email) for full_name, email in env("ADMINS").split(",")]
-MANAGERS = [(full_name, email) for full_name, email in env("MANAGERS").split(",")]
+ADMINS = [(full_name, email) for full_name, email in env("ADMINS", default=",").split(",")]
+MANAGERS = [(full_name, email) for full_name, email in env("MANAGERS", default=",").split(",")]
