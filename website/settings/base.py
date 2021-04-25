@@ -47,8 +47,8 @@ INSTALLED_APPS = [
 ]
 
 EXTERNAL_APPS = [
-    'admin_honeypot',
-    'axes',
+    "admin_honeypot",
+    "axes",
 ]
 
 LOCAL_APPS = [
@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'axes.middleware.AxesMiddleware',
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "website.urls"
@@ -142,6 +142,6 @@ SITE_TITLE = "django-base"
 DJANGO_ADMIN_PATH = env("DJANGO_ADMIN_PATH")
 
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "axes.backends.AxesBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]

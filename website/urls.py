@@ -19,7 +19,7 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
     path("", include("website.common.urls")),
 ]
