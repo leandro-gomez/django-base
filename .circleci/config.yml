@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  heroku: circleci/heroku@1.2.6 # Invoke the Heroku orb
+
 commands:
   save_cache_pip:
     steps:
@@ -157,3 +160,12 @@ workflows:
       - black:
           requires:
             - build
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - test-migrations
+            - test
+            - prospector
+            - black
+          filters:
+            branches:
+              only: production
