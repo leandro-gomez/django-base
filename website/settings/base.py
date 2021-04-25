@@ -48,13 +48,14 @@ INSTALLED_APPS = [
 
 EXTERNAL_APPS = [
     'admin_honeypot',
+    'axes',
 ]
 
 LOCAL_APPS = [
     "website.common.apps.CommonConfig",
 ]
 
-INSTALLED_APPS += LOCAL_APPS
+INSTALLED_APPS += EXTERNAL_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = "website.urls"
@@ -138,3 +140,8 @@ STATIC_URL = "/static/"
 SITE_TITLE = "django-base"
 
 DJANGO_ADMIN_PATH = env("DJANGO_ADMIN_PATH")
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
