@@ -2,6 +2,7 @@
 
 [![django-base](https://circleci.com/gh/leandro-gomez/django-base.svg?style=svg)](https://app.circleci.com/pipelines/github/leandro-gomez/django-base)
 
+[![codecov](https://codecov.io/gh/leandro-gomez/django-base/branch/main/graph/badge.svg?token=VAPRPUG6AN)](https://codecov.io/gh/leandro-gomez/django-base)
 
 ## Requirements
 
