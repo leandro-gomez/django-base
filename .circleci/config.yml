@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   heroku: circleci/heroku@1.2.6 # Invoke the Heroku orb
+  codecov: codecov/codecov@1.1.4
 
 commands:
   save_cache_pip:
@@ -144,6 +145,8 @@ jobs:
       - store_artifacts:
           path: htmlcov
           destination: tr3
+      - codecov/upload:
+          file: coverage.xml
 workflows:
   main:
     jobs:
