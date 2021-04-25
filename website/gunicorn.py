@@ -1,12 +1,7 @@
 # See https://docs.gunicorn.org/en/stable/settings.html#config-file
 # Based on https://github.com/benoitc/gunicorn/blob/01a1c7ca9a76d14a707b2946192ca7278247c2ce/examples/example_config.py
 import os
-from multiprocessing import cpu_count
-
-
-def max_workers():
-    # See https://docs.gunicorn.org/en/20.0.4/design.html#how-many-workers
-    return (cpu_count() * 2) + 1
+import multiprocessing
 
 
 def app_port():
@@ -17,9 +12,9 @@ worker_class = "gevent"
 
 proc_name = "django-base-gunicorn"
 
-bind = "0.0.0.0:%s" % app_port()
+bind = f"0.0.0.0:{app_port()}"
 
-workers = max_workers()
+workers = multiprocessing.cpu_count() * 2 - 1
 
 max_requests = 5000
 
@@ -33,10 +28,19 @@ timeout = 400
 
 # https://docs.gunicorn.org/en/19.9.0/settings.html#errorlog
 # Equivalent to --log-file
-errorlog = os.environ.get("ERROR_LOG", "-")
+accesslog = errorlog = "-"
 
-accesslog = os.environ.get("ACCESS_LOG", "-")
+loglevel = "info"
 
-app_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
-pythonpath = "%s," % app_path
+# %({x-forwarded-for}i)s : Remote ip forwarded by AWS Loadbalancer
+# %(h)s : remote address. Actually this is a private ip when using a AWS LoadBalancer
+# %(l)s : "-" string
+# %(t)s : date of the request
+# %(s)s : status
+# "%(r)s" : status line (e.g. GET / HTTP/1.1)
+# %(q)s : Query string
+# %(b)s : response length or '-' (CLF format)
+# %(T)s : request time in seconds
+# %(f)s : referrer
+# %(a)s : user agent
+access_log_format = '%({x-forwarded-for}i)s %(h)s %(l)s %(t)s %(s)s "%(r)s" "%(q)s" %(b)s %(T)s "%(f)s" "%(a)s"'
