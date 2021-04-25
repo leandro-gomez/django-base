@@ -7,9 +7,8 @@ MIDDLEWARE = MIDDLEWARE + PROD_MIDDLEWARE
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-ALLOWED_HOSTS = [
-    "django-base-7337.herokuapp.com",
-]
+ALLOWED_HOSTS_RAW = env("ALLOWED_HOSTS")
+ALLOWED_HOSTS = ALLOWED_HOSTS.split(",")
 
 CACHES = {
     "default": {
@@ -18,8 +17,12 @@ CACHES = {
     }
 }
 
-ADMINS = [(full_name, email) for full_name, email in env("ADMINS", default=",").split(",")]
-MANAGERS = [(full_name, email) for full_name, email in env("MANAGERS", default=",").split(",")]
+ADMINS_RAW = env("ADMINS", default=None)
+if ADMINS_RAW:
+    ADMINS = [(full_name, email) for full_name, email in ADMINS_RAW.split(",")]
+MANAGERS_RAW = env("MANAGERS", default=None)
+if MANAGERS_RAW:
+    MANAGERS = [(full_name, email) for full_name, email in MANAGERS_RAW.split(",")]
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
