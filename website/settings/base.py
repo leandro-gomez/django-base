@@ -144,5 +144,5 @@ AUTHENTICATION_BACKENDS = [
 
 # default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'
 CSP_SCRIPT_SRC = ("'self'", "code.jquery.com", "cdn.jsdelivr.net")
-CSP_IMG_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'", "data:")
 CSP_STYLE_SRC = ("'self'", "cdn.jsdelivr.net")
