@@ -146,6 +146,7 @@ AUTHENTICATION_BACKENDS = [
 CSP_SCRIPT_SRC = (
     "'self'",
     "code.jquery.com",
+    "cdn.jsdelivr.net"
 )
 CSP_IMG_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "cdn.jsdelivr.net")
