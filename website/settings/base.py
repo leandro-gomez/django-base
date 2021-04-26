@@ -65,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
     "axes.middleware.AxesMiddleware",
 ]
 
@@ -145,3 +146,10 @@ AUTHENTICATION_BACKENDS = [
     "axes.backends.AxesBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
+
+# default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "code.jquery.com",
+    "cdn.jsdelivr.net",
+)
