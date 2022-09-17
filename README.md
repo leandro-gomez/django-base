@@ -9,15 +9,25 @@
 - [Docker](https://www.docker.com/)
 - [Docker compose](https://docs.docker.com/compose/)
 - [pyenv](https://github.com/pyenv/pyenv)
+## MacOS
+
+- PostgreSQL: `brew install postgresql`
 
 ## Setup
 
-- `git clone git@github.com:leandro-gomez/django-base.git;`
-- `cd django-base;`
-- `pyenv install 3.9.4`
-- `pyenv virtualenv 3.9.4 django-base`
-- `pip install -r requirements/local.txt`
-- `cp website/settings/.env.local website/settings/.env`
+```bash
+# Get the code
+git clone git@github.com:leandro-gomez/django-base.git;
+cd django-base;
+
+# Install Python & dependencies
+pyenv install 3.9.4;
+pyenv virtualenv 3.9.4 django-base;
+pip install -r requirements/local.txt
+
+# Configure the environment
+cp website/settings/.env.local website/settings/.env
+```
 
 ## Development
 

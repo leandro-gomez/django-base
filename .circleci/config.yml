@@ -149,7 +149,7 @@ jobs:
           file: coverage.xml
 
 workflows:
-  main:
+  default:
     jobs:
       - build_docker_image
       - test-migrations:
@@ -165,12 +165,3 @@ workflows:
       - black:
           requires:
             - build
-      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-          requires:
-            - test-migrations
-            - test
-            - prospector
-            - black
-          filters:
-            branches:
-              only: main
